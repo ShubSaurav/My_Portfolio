@@ -34,11 +34,7 @@ export const Navbar = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container-custom flex items-center justify-between h-16 md:h-20 px-4 md:px-8">
-        <a href="#" className="font-heading font-bold text-xl md:text-2xl gradient-text">
-          SS
-        </a>
-
+      <div className="container-custom flex items-center justify-end h-16 md:h-20 px-4 md:px-8">
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
