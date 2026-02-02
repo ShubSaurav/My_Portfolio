@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Award, Cloud, Palette, Code, Trophy, LayoutGrid, Medal } from "lucide-react";
 import { CertificationModal } from "./CertificationModal";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
+import pdfWorker from "pdfjs-dist/build/pdf.worker?url";
 
 const categoryMeta = {
   linkedin: {
@@ -69,6 +71,73 @@ type Certification = {
   link: string;
   date: string;
   category: CategoryKey;
+};
+
+GlobalWorkerOptions.workerSrc = pdfWorker;
+
+const pdfThumbnailCache = new Map<string, string>();
+
+const PdfThumbnail = ({ src, alt }: { src: string; alt: string }) => {
+  const [thumbnail, setThumbnail] = useState<string | null>(
+    pdfThumbnailCache.get(src) ?? null
+  );
+
+  useEffect(() => {
+    if (thumbnail) return;
+    let cancelled = false;
+
+    const renderThumbnail = async () => {
+      try {
+        const loadingTask = getDocument({
+          url: src,
+          disableRange: true,
+          disableStream: true,
+        });
+        const pdf = await loadingTask.promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 1 });
+        const targetWidth = 320;
+        const scale = targetWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        if (!context) return;
+
+        canvas.width = scaledViewport.width;
+        canvas.height = scaledViewport.height;
+
+        await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
+        const dataUrl = canvas.toDataURL("image/png");
+        pdfThumbnailCache.set(src, dataUrl);
+        if (!cancelled) setThumbnail(dataUrl);
+      } catch (error) {
+        if (!cancelled) setThumbnail(null);
+      }
+    };
+
+    renderThumbnail();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [src, thumbnail]);
+
+  if (thumbnail) {
+    return (
+      <img
+        src={thumbnail}
+        alt={alt}
+        className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
+      />
+    );
+  }
+
+  return (
+    <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+      Loading preview…
+    </div>
+  );
 };
 
 const certificateImports = import.meta.glob<string>(
@@ -301,11 +370,7 @@ export const CertificationsSection = () => {
               {cert.image && (
                 <div className="mb-3 aspect-[4/3] w-full overflow-hidden rounded-lg bg-muted">
                   {cert.image.toLowerCase().endsWith(".pdf") ? (
-                    <embed
-                      src={`${cert.image}#toolbar=0&navpanes=0&scrollbar=0`}
-                      type="application/pdf"
-                      className="h-full w-full"
-                    />
+                    <PdfThumbnail src={cert.image} alt={cert.title} />
                   ) : (
                     <img
                       src={cert.image}
