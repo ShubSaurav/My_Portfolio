@@ -42,14 +42,18 @@ export const AboutSection = () => {
             className="relative"
           >
             <div className="relative w-full max-w-md mx-auto">
-              <div className="aspect-square rounded-2xl glass-card p-2 glow-cyan">
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <span className="text-5xl font-heading font-bold text-primary-foreground">SS</span>
+              <div className="aspect-[3/4] rounded-2xl glass-card p-2 glow-cyan">
+                <div className="relative w-full h-full rounded-xl overflow-hidden">
+                  <img
+                    src="/gallery/about%20me/winning%20.jpeg"
+                    alt="Shubham Saurav"
+                    className="w-full h-full object-contain"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-5">
+                    <div className="rounded-xl bg-background/70 backdrop-blur-md border border-white/10 px-4 py-3 text-center">
+                      <h3 className="font-heading text-2xl font-bold text-foreground mb-1">Shubham Saurav</h3>
+                      <p className="text-primary">CSE Student • Developer • Innovator</p>
                     </div>
-                    <h3 className="font-heading text-2xl font-bold text-foreground mb-2">Shubham Saurav</h3>
-                    <p className="text-primary">CSE Student • Developer • Innovator</p>
                   </div>
                 </div>
               </div>

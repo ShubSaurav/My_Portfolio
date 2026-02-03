@@ -37,11 +37,14 @@ const discoverGalleryItems = (): GalleryItem[] => {
     ];
   }
 
-  return Object.entries(galleryImports).map(([path, image], index) => ({
+  const items = Object.entries(galleryImports).map(([path, image], index) => ({
     title: formatTitle(path.split("/").pop() ?? "Image"),
     file: image,
     description: `Featured in gallery`,
   }));
+  
+  // Sort by file name in reverse order to get latest images first
+  return items.sort((a, b) => b.file.localeCompare(a.file));
 };
 
 export const GallerySection = () => {
