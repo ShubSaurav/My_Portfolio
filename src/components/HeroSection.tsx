@@ -12,8 +12,9 @@ const floatingIcons = [
   { icon: "📡", delay: 1, x: "90%", y: "40%" },
 ];
 
-const PROFILE_IMAGE = "/profile-pic/shub.jpeg";
+const PROFILE_IMAGE = import.meta.env.VITE_PROFILE_IMAGE || "/profile-pic/shub.jpeg";
 const FALLBACK_IMAGE = "https://placehold.co/400x400?text=Add+profile.jpg";
+const RESUME_URL = import.meta.env.VITE_RESUME_URL || "#";
 
 export const HeroSection = () => {
   const [profileSrc, setProfileSrc] = useState(PROFILE_IMAGE);
@@ -136,7 +137,7 @@ export const HeroSection = () => {
             <Folder size={20} />
             View Projects
           </a>
-          <a href="#" className="btn-outline flex items-center gap-2 w-full sm:w-auto justify-center">
+          <a href={RESUME_URL} download className="btn-outline flex items-center gap-2 w-full sm:w-auto justify-center">
             <Download size={20} />
             Download Resume
           </a>

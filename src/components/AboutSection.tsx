@@ -3,6 +3,8 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Rocket, Award, Users, Code } from "lucide-react";
 
+const ABOUT_IMAGE = import.meta.env.VITE_ABOUT_IMAGE || "/gallery/about%20me/winning%20.jpeg";
+
 const stats = [
   { icon: Code, value: "15+", label: "Projects Built" },
   { icon: Award, value: "1", label: "Patent Filed" },
@@ -45,7 +47,7 @@ export const AboutSection = () => {
               <div className="aspect-[3/4] rounded-2xl glass-card p-2 glow-cyan">
                 <div className="relative w-full h-full rounded-xl overflow-hidden">
                   <img
-                    src="/gallery/about%20me/winning%20.jpeg"
+                    src={ABOUT_IMAGE}
                     alt="Shubham Saurav"
                     className="w-full h-full object-contain"
                   />

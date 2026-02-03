@@ -12,6 +12,26 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Sensitive files - use Firebase Storage instead
+public/profile-pic/*.jpg
+public/profile-pic/*.jpeg
+public/profile-pic/*.png
+public/gallery/*.jpg
+public/gallery/*.jpeg
+public/gallery/*.png
+public/gallery/about me/
+src/assets/gallery/*.jpg
+src/assets/gallery/*.jpeg
+src/assets/gallery/*.png
+*.pdf
+/certificates/
+public/certificates/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
